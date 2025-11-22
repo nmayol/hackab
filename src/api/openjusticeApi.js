@@ -5,25 +5,35 @@
  * Based on the example from OpenJustice API documentation
  */
 
-const FIXED_CONVERSATION_ID = "4lcb3vr3x";
-
 /**
  * Get API configuration from environment variables
+ * All API-related configuration is stored in .env file
  */
 export function getApiConfig() {
   const apiKey = import.meta.env.VITE_OPENJUSTICE_API_KEY;
   const apiUrl =
     import.meta.env.VITE_OPENJUSTICE_API_URL ||
     "https://api.staging.openjustice.ai";
-  // dialogFlowId may be required by the API endpoint even though API key handles routing
-  // If not provided, we'll need to get it from the API key configuration or user input
   const dialogFlowId = import.meta.env.VITE_DIALOG_FLOW_ID;
+  const conversationId = import.meta.env.VITE_CONVERSATION_ID;
 
   if (!apiKey) {
     throw new Error("API key not found. Please check your .env file.");
   }
 
-  return { apiKey, apiUrl, dialogFlowId };
+  if (!dialogFlowId) {
+    throw new Error(
+      "Dialog flow ID not found. Please set VITE_DIALOG_FLOW_ID in your .env file."
+    );
+  }
+
+  if (!conversationId) {
+    throw new Error(
+      "Conversation ID not found. Please set VITE_CONVERSATION_ID in your .env file."
+    );
+  }
+
+  return { apiKey, apiUrl, dialogFlowId, conversationId };
 }
 
 /**
@@ -259,19 +269,19 @@ async function startStream(
  * @returns {Promise<Object>} The complete response
  */
 export async function processTextMessage(message, onUpdate) {
-  const { apiKey, apiUrl, dialogFlowId } = getApiConfig();
+  const { apiKey, apiUrl, dialogFlowId, conversationId } = getApiConfig();
 
-  // Step 1: Send message to the fixed conversation
-  console.log(`Sending message to conversation ${FIXED_CONVERSATION_ID}...`);
-  let conversationId;
+  // Step 1: Send message to the conversation
+  console.log(`Sending message to conversation ${conversationId}...`);
+  let returnedConversationId;
   try {
-    conversationId = await sendMessage(
+    returnedConversationId = await sendMessage(
       message,
       apiKey,
       apiUrl,
-      FIXED_CONVERSATION_ID
+      conversationId
     );
-    console.log("Message sent. Conversation ID:", conversationId);
+    console.log("Message sent. Conversation ID:", returnedConversationId);
   } catch (error) {
     console.error("Failed to send message:", error);
     throw error;
@@ -280,7 +290,7 @@ export async function processTextMessage(message, onUpdate) {
   // Step 2: Start streaming the response
   console.log("Starting stream...");
   const fullResponse = await startStream(
-    conversationId,
+    returnedConversationId,
     apiKey,
     apiUrl,
     dialogFlowId,

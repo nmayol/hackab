@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import LandingPage from "./LandingPage";
-import { processImageWithDescription } from "./api/openjusticeApi";
 import titleLogo from "../public/title2.svg";
 import { processTextMessage } from "./api/openjusticeApi";
 
@@ -170,7 +169,7 @@ function App() {
               className="hidden"
             />
           </div>
-        </div>
+        </form>
 
         {/* Right Side: Chat Interface */}
         <div

@@ -22,11 +22,6 @@ function ModeToggle({ isDarkMode, setIsDarkMode }) {
           {isDarkMode ? "🌑" : "🌞"}
         </span>
       </div>
-
-      {/* Label or small text */}
-      <span className={`absolute inset-0 flex items-center justify-center text-xs font-bold pointer-events-none ${isDarkMode ? 'text-white' : 'text-white'}`}>
-        {isDarkMode ? "" : ""}
-      </span>
     </button>
   );
 }

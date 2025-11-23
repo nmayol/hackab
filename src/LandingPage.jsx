@@ -3,6 +3,8 @@ import titleDark from "../public/titleDark.svg";
 import titleCute from "../public/titleCute.svg";
 import melody from "../public/melody.png";
 import melody2 from "../public/melody2.png";
+import HomeButton from "./components/HomeButton";
+import ModeToggle from "./components/ModeToggle";
 
 function LandingPage({ onLaunch, onHome, isDarkMode, setIsDarkMode }) {
   return (
@@ -13,6 +15,7 @@ function LandingPage({ onLaunch, onHome, isDarkMode, setIsDarkMode }) {
           onHome={
             onHome || (() => window.scrollTo({ top: 0, behavior: "smooth" }))
           }
+          isDarkMode={isDarkMode}
         />
         <ModeToggle isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
       </div>
@@ -27,42 +30,9 @@ function LandingPage({ onLaunch, onHome, isDarkMode, setIsDarkMode }) {
   );
 }
 
-function HomeButton({ onHome }) {
-  return (
-    <button
-      onClick={onHome}
-      className="px-4 py-2 bg-black border-2 border-white text-white font-bold text-sm cursor-pointer transition-all duration-300 hover:scale-110 hover:bg-gray-900"
-      aria-label="Go to home page"
-      style={{
-        clipPath:
-          "polygon(0 0, calc(100% - 4px) 0, 100% 4px, 100% 100%, 4px 100%, 0 calc(100% - 4px))",
-        WebkitClipPath:
-          "polygon(0 0, calc(100% - 4px) 0, 100% 4px, 100% 100%, 4px 100%, 0 calc(100% - 4px))",
-      }}
-    >
-      HOME
-    </button>
-  );
-}
+// HomeButton moved to `src/components/HomeButton.jsx`
 
-function ModeToggle({ isDarkMode, setIsDarkMode }) {
-  return (
-    <button
-      onClick={() => setIsDarkMode(!isDarkMode)}
-      className="relative w-16 h-8 bg-black border-2 border-white rounded-full cursor-pointer transition-all duration-300 hover:scale-110"
-      aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
-    >
-      <div
-        className={`absolute top-1 left-1 w-6 h-6 bg-white rounded-full transition-all duration-300 ${
-          isDarkMode ? "translate-x-0" : "translate-x-8"
-        }`}
-      />
-      <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-white pointer-events-none">
-        {isDarkMode ? "DARK" : "LIGHT"}
-      </span>
-    </button>
-  );
-}
+// ModeToggle moved to `src/components/ModeToggle.jsx`
 
 // Dark Mode Design (current red and black sun design)
 function DarkModeDesign({ onLaunch }) {
